@@ -1,0 +1,55 @@
+
+How to Use the Kubernetes Deployment Script
+
+---- Prerequisites
+1. Kubernetes Cluster: Ensure you have access to a Kubernetes cluster and the `kubectl` command is configured correctly to connect to it.
+2. Python and Dependencies: Install Python and necessary packages using the `requirements.txt` file. 
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---- Script Overview
+The script can be used for two main purposes:
+1. Create a Deployment: Deploys an application, sets up a service, and configures autoscaling.
+2. Get Deployment Health Status: Retrieves the health and metrics status of an existing deployment based on its UID.
+
+### Running the Script
+The script accepts the following command-line arguments:
+
+| Argument                | Description                                                                                | Required | Default      |
+|-------------------------|--------------------------------------------------------------------------------------------|----------|--------------|
+| `--namespace`           | Kubernetes namespace to use.                                                               | Yes      |              |
+| `--create-deployment`   | Flag to indicate creating a new deployment.                                                | Optional | False        |
+| `--get-details-by-id`   | UID of the deployment to fetch health details.                                             | Optional | None         |
+| `--deployment-name`     | Name of the deployment.                                                                    | Yes      |              |
+| `--image`               | Docker image for the deployment.                                                           | Yes      |              |
+| `--replicas`            | Number of replicas.                                                                        | No       | 1            |
+| `--ports`               | List of ports to expose.                                                                   | No       | 80           |
+| `--cpu-request`         | CPU resources requested per container.                                                     | No       |              |
+
+### Examples
+1. Creating a Deployment:
+   ```
+   python k8s_deployment.py \
+  --namespace shivam \
+  --image nginx:latest \
+  --deployment-name shivam-app-v1 \
+  --replicas 3 \
+  --ports 80 443 \
+  --cpu-request "100m" \
+  --memory-request "128Mi" \
+  --cpu-limit "500m" \
+  --memory-limit "512Mi" \
+  --min-replicas 1 \
+  --max-replicas 5 \
+  --cpu-target 80 \
+  --memory-target 80 \
+  --create-deployment
+   ```
+
+2. Getting Deployment Health Details:
+   ```
+   python k8s_deployment.py --namespace shivam --get-details-by-id <deployment-UID>
+   ```
+
+This guide provides the necessary steps to run the script effectively.

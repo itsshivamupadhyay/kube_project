@@ -1,0 +1,69 @@
+serviceaccount/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+service/metrics-server created
+deployment.apps/metrics-server created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+deployment.apps/metrics-server patched
+pod "metrics-server-54bf7cdd6-5nxmw" deleted
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+metrics-server   0/1     1            0           25s
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   136m         13%    1271Mi          67%       
+node01         234m         23%    777Mi           41%       
+pod/shivam-app-v1-56c7bccfb8-6qg6t condition met
+pod/shivam-app-v1-56c7bccfb8-kfb25 condition met
+pod/shivam-app-v1-56c7bccfb8-rbpqh condition met
+Connected to Kubernetes cluster
+Namespace 'shivam' does not exist. Creating namespace.
+Namespace 'shivam' created successfully.
+Deployment shivam-app-v1 created successfully
+Service shivam-app-v1 created successfully
+Installing Metrics Server...
+Metrics Server not found. Installing...
+Waiting for pod 'metrics-server' in namespace 'kube-system' to be ready...
+Error waiting for pod 'metrics-server' to be ready: Command 'kubectl wait --for=condition=ready pod -l app=metrics-server -n kube-system --timeout=300s' returned non-zero exit status 1.
+Patching Metrics Server with --kubelet-insecure-tls...
+Deleting old metrics-server pods to trigger recreation with new config...
+Waiting for pod 'metrics-server' in namespace 'kube-system' to be ready...
+Error waiting for pod 'metrics-server' to be ready: Command 'kubectl wait --for=condition=ready pod -l app=metrics-server -n kube-system --timeout=300s' returned non-zero exit status 1.
+Metrics Server has been patched and is now running with the updated configuration.
+Verifying Metrics Server installation...
+Waiting for metrics availability...
+Metrics API not available, retrying...
+Metrics API not available, retrying...
+Metrics API not available, retrying...
+Metrics API not available, retrying...
+Metrics API not available, retrying...
+Metrics API not available, retrying...
+Metrics are available.
+Checking metrics availability...
+HPA for shivam-app-v1 created successfully with CPU and memory thresholds
+Waiting for pod 'shivam-app-v1' in namespace 'shivam' to be ready...
+Pod 'shivam-app-v1' is now Ready.
+HPA 'shivam-app-v1' in namespace 'shivam' is not ready, waiting...
+HPA 'shivam-app-v1' in namespace 'shivam' is not ready, waiting...
+HPA 'shivam-app-v1' in namespace 'shivam' is not ready, waiting...
+Deployment:  {'deployment_id': 'db4dd3a8-9630-48c6-ab0c-bec3716b75fb', 'replicas': 3, 'available_replicas': 3, 'unavailable_replicas': None}
+Service:  {'name': 'shivam-app-v1', 'type': 'ClusterIP', 'cluster_ip': '10.100.113.27', 'ports': [{'port': 80, 'target_port': 80}, {'port': 443, 'target_port': 443}]}
+HPA:  {'current_replicas': None, 'desired_replicas': 0, 'current_metrics': None}
+HPA:  {'current_replicas': 3, 'desired_replicas': 3, 'current_metrics': [{'container_resource': None,
+ 'external': None,
+ 'object': None,
+ 'pods': None,
+ 'resource': {'current': {'average_utilization': 0,
+                          'average_value': '0',
+                          'value': None},
+              'name': 'cpu'},
+ 'type': 'Resource'}, {'container_resource': None,
+ 'external': None,
+ 'object': None,
+ 'pods': None,
+ 'resource': {'current': {'average_utilization': 2,
+                          'average_value': '3803818666m',
+                          'value': None},
+              'name': 'memory'},
+ 'type': 'Resource'}]}

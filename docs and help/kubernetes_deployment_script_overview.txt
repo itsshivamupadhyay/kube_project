@@ -1,0 +1,61 @@
+
+Overview of the Kubernetes Deployment Script
+
+This Python script simplifies creating and managing deployments on a Kubernetes cluster. 
+It connects to the cluster, configures deployments with specified resource requirements, 
+and optionally enables autoscaling using the Horizontal Pod Autoscaler (HPA). It also ensures 
+that the necessary tools, such as Metrics Server and KEDA, are installed and ready for scaling 
+operations. Below is a breakdown of each section in the script:
+
+Section 1: Importing Required Modules
+The script starts by importing essential modules:
+- argparse, subprocess, yaml, json, os, sys, and time: General-purpose libraries for command-line 
+  argument parsing, shell commands, YAML/JSON handling, OS operations, and timing.
+- kubernetes.client, kubernetes.config, kubernetes.client.rest: The Kubernetes Python client, which 
+  enables interaction with Kubernetes APIs.
+
+Section 2: Deployment Health Status Retrieval (get_deployment_health_status)
+This function checks the health of a deployment by:
+1. Retrieving deployment status, including replica counts and conditions.
+2. Checking CPU and memory usage metrics for each pod (using kubectl top).
+3. Collecting any issues from deployment conditions.
+4. Returning a health report, including HPA status if autoscaling is configured.
+
+Section 3: Namespace Handling (create_namespace_if_not_exists)
+Checks if a specified namespace exists, and if not, creates it.
+
+Section 4: Metrics Server Installation and Verification
+These functions manage the installation and configuration of the Metrics Server, a Kubernetes 
+component that collects resource metrics from nodes and pods:
+- install_metrics_server installs or patches the Metrics Server if necessary.
+- patch_metrics_server adds the --kubelet-insecure-tls flag to the Metrics Server configuration.
+- wait_for_pod_to_be_ready and verify_metrics_server ensure the Metrics Server is running.
+- check_metrics_availability validates that node and pod metrics are accessible.
+
+Section 5: HPA Readiness and Status (check_hpa_ready, get_hpa_status)
+These functions confirm that an HPA is ready and retrieve its status, which includes the current and 
+desired replica counts and metrics used for scaling.
+
+Section 6: General Cluster Commands (connect_to_cluster, install_helm, install_keda)
+- connect_to_cluster establishes a connection to the Kubernetes cluster.
+- install_helm installs Helm if needed, allowing the script to manage Helm charts.
+- install_keda installs KEDA (Kubernetes Event-Driven Autoscaling), which enables event-based 
+  autoscaling using Helm.
+
+Section 7: Deployment Creation (create_deployment)
+Handles the full deployment creation process:
+1. Namespace Creation: Calls create_namespace_if_not_exists.
+2. Deployment: Creates or updates a Kubernetes deployment.
+3. Service Creation: Exposes the deployment as a service.
+4. HPA Setup: Configures an HPA for the deployment, including metrics for CPU and memory.
+5. Pod Readiness: Waits for deployment pods to be ready.
+6. Deployment Details: Collects and prints deployment, service, and HPA details.
+
+Section 8: Utility Functions (run_command, get_service_details, get_deployment_status)
+- run_command: Executes shell commands.
+- get_service_details and get_deployment_status retrieve information on services and deployments.
+
+Section 9: Main Function
+The main function parses command-line arguments and calls appropriate functions:
+- Deployment Creation: Creates a deployment with given specifications.
+- Health Status Retrieval: Retrieves health information for a specified deployment UID.
